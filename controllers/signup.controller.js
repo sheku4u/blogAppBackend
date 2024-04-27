@@ -4,13 +4,13 @@ import {encrypt} from "../utils/bcrypt.js";
 
 const signupController = async (req, res) => {
 
-    const { email, password } = req.body;
+    const { username, password } = req.body;
     const hashpassword = await encrypt(password);
-    const user = await usersModel.findOne({ email });
+    const user = await usersModel.findOne({ username });
     if (user) {
         return res.status(400).json({ message: "User already exists" });
     }
-    const newUser = new usersModel({ email, password: hashpassword });
+    const newUser = new usersModel({ username, password: hashpassword });
     await newUser.save();
     res.status(201).json({ message: "User created successfully" });
 }
